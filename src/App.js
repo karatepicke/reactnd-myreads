@@ -2,7 +2,8 @@ import React from 'react'
 import * as BooksAPI from './BooksAPI'
 import { Link } from 'react-router-dom'
 import './App.css'
-import Bookshelf from './Bookshelf';
+import BooksList from './BooksList'
+
 
 class BooksApp extends React.Component {
   state = {
@@ -42,7 +43,6 @@ class BooksApp extends React.Component {
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
                 <input type="text" placeholder="Search by title or author" />
-
               </div>
             </div>
             <div className="search-books-results">
@@ -50,21 +50,7 @@ class BooksApp extends React.Component {
             </div>
           </div>
         ) : (
-            <div className="list-books">
-              <div className="list-books-title">
-                <h1>MyReads</h1>
-              </div>
-              <div className="list-books-content">
-                <div>
-                  <Bookshelf bookshelfTitle='Currently Reading' />
-                  <Bookshelf bookshelfTitle='Want to Read' />
-                  <Bookshelf bookshelfTitle='Read' />
-                </div>
-              </div>
-              <div className="open-search">
-                <button onClick={() => this.setState({ showSearchPage: true })}>Add a book</button>
-              </div>
-            </div>
+            <BooksList />
           )}
       </div>
     )
