@@ -29,6 +29,7 @@ class BooksApp extends React.Component {
         console.log(error)
       });
     this.sortBooks();
+    console.log('HAHA')
   }
 
   sortBooks() {
