@@ -55,6 +55,15 @@ class BooksApp extends React.Component {
     })
   }
 
+  componentDidMount() {
+    BooksAPI.getAll()
+      .then((books) => {
+        this.setState(() => ({
+          books
+        }))
+      })
+  }
+
   render() {
     return (
       <div className="app">
@@ -72,7 +81,6 @@ class BooksApp extends React.Component {
                   you don't find a specific author or title. Every search is limited by search terms.
                 */}
                 <input type="text" placeholder="Search by title or author" />
-
               </div>
             </div>
             <div className="search-books-results">
