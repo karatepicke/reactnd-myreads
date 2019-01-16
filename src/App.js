@@ -33,7 +33,6 @@ class BooksApp extends React.Component {
 
   sortBooks() {
     const allBooks = this.state.books
-    const crBooks = this.state.crBooks
 
     allBooks.forEach(book => {
       if (book.shelf === 'currentlyReading') {
