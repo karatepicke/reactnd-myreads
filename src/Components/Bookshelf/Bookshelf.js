@@ -10,12 +10,16 @@ class Bookshelf extends React.Component {
   }
 
   componentDidMount() {
-
+    this.pushPropsBooksToState();
   }
 
   componentWillUnmount() {
 
   }
+
+  pushPropsBooksToState() {
+
+  };
 
   render() {
     return (
