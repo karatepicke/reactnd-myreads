@@ -10,7 +10,7 @@ class Bookshelf extends React.Component {
   }
 
   componentDidMount() {
-    this.pushPropsBooksToState();
+
   }
 
   componentWillUnmount() {
@@ -35,6 +35,7 @@ class Bookshelf extends React.Component {
                     title={book.title}
                     coverUrl={book.imageLinks.thumbnail}
                     author={book.authors}
+                    shelf={book.shelf}
                   />
                 </li>
               )

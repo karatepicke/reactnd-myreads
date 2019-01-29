@@ -24,14 +24,14 @@ class BooksApp extends React.Component {
   componentDidMount() {
     APIfunctions.getAll().then((books) => {
       this.setState({ books })
-      this.sortBooks();
+      this.sortBooksOnce();
     })
       .catch(error => {
         console.log(error)
       });
   }
 
-  sortBooks() {
+  sortBooksOnce() {
     const allBooks = this.state.books
 
     allBooks.forEach(book => {
@@ -49,6 +49,12 @@ class BooksApp extends React.Component {
         }))
       }
     })
+  }
+
+
+
+  handleChange = (event) => {
+    this.setState({ myShelf: event.target.value })
   }
 
   // changeBook = (changedBook) => {
@@ -91,7 +97,11 @@ class BooksApp extends React.Component {
               </div>
               <div className="list-books-content">
                 <div>
-                  <Bookshelf shelfTitle={'Currently Reading'} books={this.state.crBooks} />
+                  <Bookshelf
+                    shelfTitle={'Currently Reading'}
+                    books={this.state.crBooks}
+                  // handleShelfChange={}
+                  />
                   <Bookshelf shelfTitle={'Want to Read'} books={this.state.wtrBooks} />
                   <Bookshelf shelfTitle={'Read'} books={this.state.rBooks} />
                 </div>
