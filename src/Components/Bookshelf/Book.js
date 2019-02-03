@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import ShelfChanger from './ShelfChanger';
 
 class Book extends React.Component {
   constructor(props) {
@@ -7,7 +8,7 @@ class Book extends React.Component {
       myShelf: ''
     }
     this.handleChange = (event) => {
-      this.setState({ myShelf: event.target.value })
+      this.setState({ myShelf: event.target.value });
     }
   }
 
@@ -20,8 +21,9 @@ class Book extends React.Component {
       <div className='book'>
         <div className="book-top">
           <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.coverUrl})` }}></div>
+          {/* <ShelfChanger onChangeShelf={this.handleChange} /> */}
           <div className="book-shelf-changer">
-            <select onChange={this.handleChange}>
+            <select value={this.state.myShelf || "none"} onChange={(e) => { this.props.updateBook(this.props.book, e.target.value) }}>
               <option value="move" disabled>Move to...</option>
               <option value="currentlyReading"  >Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
@@ -37,4 +39,4 @@ class Book extends React.Component {
   }
 }
 
-export default Book
+export default Book;

@@ -1,7 +1,7 @@
-import React from 'react'
-import * as APIfunctions from './BooksAPI'
-import './App.css'
-import Bookshelf from './Components/Bookshelf/Bookshelf'
+import React from 'react';
+import * as APIfunctions from './BooksAPI';
+import './App.css';
+import Bookshelf from './Components/Bookshelf/Bookshelf';
 
 class BooksApp extends React.Component {
   constructor(props) {
@@ -19,9 +19,15 @@ class BooksApp extends React.Component {
       wtrBooks: [],
       rBooks: []
     }
+    this.fetchBooks = this.fetchBooks.bind(this)
   }
 
   componentDidMount() {
+    this.fetchBooks();
+  }
+
+  fetchBooks() {
+    console.log('API called')
     APIfunctions.getAll().then((books) => {
       this.setState({ books })
       this.sortBooksOnce();
@@ -33,39 +39,24 @@ class BooksApp extends React.Component {
 
   sortBooksOnce() {
     const allBooks = this.state.books
+    const crBooks = [], wtrBooks = [], rBooks = []
 
+    console.log('sortBooks function')
     allBooks.forEach(book => {
       if (book.shelf === 'currentlyReading') {
-        this.setState(prevState => ({
-          crBooks: [...prevState.crBooks, book]
-        }))
+        crBooks.push(book)
       } else if (book.shelf === 'wantToRead') {
-        this.setState(prevState => ({
-          wtrBooks: [...prevState.wtrBooks, book]
-        }))
+        wtrBooks.push(book)
       } else {
-        this.setState(prevState => ({
-          rBooks: [...prevState.rBooks, book]
-        }))
+        rBooks.push(book)
       }
     })
+    this.setState({
+      crBooks: crBooks,
+      wtrBooks: wtrBooks,
+      rBooks: rBooks
+    })
   }
-
-
-
-  handleChange = (event) => {
-    this.setState({ myShelf: event.target.value })
-  }
-
-  // changeBook = (changedBook) => {
-  //   APIfunctions.update(changedBook, changedBook.shelf).then(() => {
-  //     console.info(`updated '${changedBook.title}' to '${changedBook.shelf}'`)
-
-  //     this.setState(state => ({
-  //       books: state.books.filter(b => b.id !== changedBook.id).concat([changedBook])
-  //     }))
-  //   })
-  // }
 
   render() {
     return (
@@ -98,12 +89,23 @@ class BooksApp extends React.Component {
               <div className="list-books-content">
                 <div>
                   <Bookshelf
+                    onBooksChanged={this.fetchBooks}
                     shelfTitle={'Currently Reading'}
+                    shelfId={'currentlyReading'}
                     books={this.state.crBooks}
-                  // handleShelfChange={}
                   />
-                  <Bookshelf shelfTitle={'Want to Read'} books={this.state.wtrBooks} />
-                  <Bookshelf shelfTitle={'Read'} books={this.state.rBooks} />
+                  <Bookshelf
+                    onBooksChanged={this.fetchBooks}
+                    shelfTitle={'Want to Read'}
+                    shelfId={'wantToRead'}
+                    books={this.state.wtrBooks}
+                  />
+                  <Bookshelf
+                    onBooksChanged={this.fetchBooks}
+                    shelfTitle={'Read'}
+                    shelfId={'read'}
+                    books={this.state.rBooks}
+                  />
                 </div>
               </div>
               <div className="open-search">

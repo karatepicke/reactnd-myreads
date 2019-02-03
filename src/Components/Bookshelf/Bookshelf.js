@@ -1,11 +1,13 @@
-import React from 'react'
-import Book from './Book'
+import React from 'react';
+import * as APIfunctions from '../../BooksAPI';
+import Book from './Book';
 
 class Bookshelf extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      books: []
+      books: [],
+      matchingBooks: []
     }
   }
 
@@ -13,13 +15,16 @@ class Bookshelf extends React.Component {
 
   }
 
-  componentWillUnmount() {
-
+  updateBook = (book, shelf) => {
+    console.log(book)
+    APIfunctions.update(book, shelf)
+      .then(resp => {
+        book.shelf = shelf;
+        this.setState({ book });
+        console.log(resp)
+      });
+    this.props.onBooksChanged();
   }
-
-  pushPropsBooksToState() {
-
-  };
 
   render() {
     return (
@@ -31,7 +36,9 @@ class Bookshelf extends React.Component {
               return (
                 <li key={book.id}>
                   <Book
-                    key={book.id}
+                    book={book}
+                    updateBook={this.updateBook}
+                    id={book.id}
                     title={book.title}
                     coverUrl={book.imageLinks.thumbnail}
                     author={book.authors}
@@ -47,4 +54,4 @@ class Bookshelf extends React.Component {
   }
 }
 
-export default Bookshelf
+export default Bookshelf;
