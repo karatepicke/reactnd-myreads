@@ -14,8 +14,9 @@ body, .app {
 
 .list-books-title {
   padding: 10px 0;
-  background: #2e7c31;
+  background: darkcyan;
   text-align: center;
+  font-family: 'Roboto Condensed', sans-serif;
 }
 
 .list-books-title h1 {
@@ -58,7 +59,7 @@ body, .app {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: #2e7d32;
+  background: darkcyan;
   background-image: url('./icons/add.svg');
   background-repeat: no-repeat;
   background-position: center;
@@ -131,6 +132,7 @@ button:active {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  min-height: 325px;
 }
 
 .books-grid li {
@@ -169,7 +171,7 @@ button:active {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #60ac5d;
+  background: darkcyan;
   background-image: url('./icons/arrow-drop-down.svg');
   background-repeat: no-repeat;
   background-position: center;
