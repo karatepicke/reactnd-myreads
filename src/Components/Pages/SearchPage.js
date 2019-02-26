@@ -1,77 +1,99 @@
+// External Depedencies
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import * as BooksAPI from '../../BooksAPI';
 import Book from '../Bookshelf/Book';
 
-class SearchPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      books: [],
-      matches: [],
-      query: ""
+
+class Search extends React.Component {
+
+    state = {
+        query: '',
+        results: [],
+        isEmpty: false,
+        isLoading: false,
     }
-  }
 
-  componentDidMount() {
-    BooksAPI.getAll()
-    .then(response => {
-      this.setState({ books: response });
-    });
-  }
-
-  updateQuery = (query) => {
-    this.setState({query: query}, this.submitSearch);
-  }
-
-  submitSearch() {
-    if(this.state.query === '' || this.state.query === undefined) {
-      this.setState({ matches: [] });
+    handleInputChange = (e) => {
+        this.setState({query: e.target.value})
+        this.findBooks(e.target.value);
     }
-    BooksAPI.search(this.state.query.trim()).then(response => {
-      if(response.error) {
-        this.setState({ matches: [] });
-      }
-      else {
-        response.forEach(b => {
-          let f = this.state.books.filter(B => B.id === b.id);
-          if(f[0]) { b.shelf = f[0].shelf; }
-        });
-        this.setState({ matches: response });
-      }
-    });
-  }
 
-  updateBook = (book, shelf) => {
-    BooksAPI.update(book, shelf)
-    .then(response => {
-      book.shelf = shelf;
-      this.setState(state => ({
-        books: state.books.filter(b => b.id !== book.id).concat([book])
-      }));
-    });
-  }
+    findBooks = (query) => {
+        if(query.trim() === '') {
+            this.setState({results: [], isEmpty: false, isLoading: false})
+            return;
+        }
+        
+        this.setState({results: [], isEmpty: false, isLoading: true})
 
-  render() {
-    return (
-      <div className="search-books">
-        <div className="search-books-bar">
-          <Link className="close-search" to="/">Close</Link>
-          <div className="search-books-input-wrapper">
-          <input type="text" placeholder="Search by title or author" value={this.state.query}
-              onChange={(event) => this.updateQuery(event.target.value)} />
-          </div>
-        </div>
-        <div className="search-books-results">
-          <ol className="books-grid">
-            {
-              this.state.matches.map((book, key) => <Book updateBook={this.updateBook} book={book} key={key} />)
-            }
-          </ol>
-        </div>
-      </div>
-    );
-  }
+        BooksAPI.search(query)
+            .then((response) => {
+                // check if the query is the same of the input value 
+                const emptyResponse = !!response.error
+                const results = emptyResponse ? [] : response
+
+                // adding shelf properties
+                results.forEach(item => {
+                    const myBook = this.props.myBooks.find(elem => elem.id === item.id)
+                    if(myBook) item.shelf = myBook.shelf
+                })
+
+                this.setState({results, isEmpty: emptyResponse, isLoading: false})
+            });
+    }
+
+    render () {
+        const { isEmpty, isLoading } = this.state
+
+        return (
+            <div className="search-container">
+                <div className="search-books-bar">
+                  <Link className="close-search" to="/">Close</Link>
+                  <div className="search-books-input-wrapper">
+                  <input type="text" placeholder="Search by title or author" value={this.state.query}
+                      onChange={(event) => this.handleInputChange(event)} />
+                  </div>
+                </div>
+
+                {isLoading && (
+                    <div className="results-loading">
+                    </div>
+                )}
+
+                {isEmpty && (
+                    <div className="no-results">
+                        Sorry, no results were found.<br/>
+                        Your search '<b>{this.state.query}</b>' did not match any books.
+                        <span className="emotion">¯\_(ツ)_/¯</span>
+                    </div>
+                )}
+
+                {this.state.results.length > 0 && (
+                    <div className="results-details">
+                        <b>{this.state.results.length}</b> results found.
+                    </div>
+                )}
+
+                <ul className="results">
+                    {this.state.results.map((book, index) => (
+                      <Book key={book.id} data={book} onUpdateBook={this.props.onUpdateBook} />
+                    ))}
+                </ul>
+            </div>
+        )
+    }
 }
 
-export default SearchPage;
+Search.defaultProps = {
+    myBooks: [],
+    onUpdateBook: () => {}
+}
+
+Search.propTypes = {
+    myBooks: PropTypes.array,
+    onUpdateBook: PropTypes.func
+}
+
+export default Search;

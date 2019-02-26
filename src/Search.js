@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, Route } from 'react-router-dom';
+import * as BooksAPI from './BooksAPI';
 import Bookshelf from './Bookshelf';
 import Book from './Book';
-import * as BooksAPI from './BooksAPI';
-import PopMSG from './PopMSG';
+import Message from './Components/Message';
 import { Debounce, Throttle } from 'react-throttle';
 
 class Search extends React.Component {
@@ -77,7 +77,7 @@ class Search extends React.Component {
   render() {
     return (
       <div className="search-books">
-        <PopMSG display={this.state.popmsgdisplay} text={this.state.popmsg}/>
+        <Message display={this.state.popmsgdisplay} text={this.state.popmsg}/>
         <div className="search-books-bar">
           <Link className="close-search" to="/">Close</Link>
           <div className="search-books-input-wrapper">
