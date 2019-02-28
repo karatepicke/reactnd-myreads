@@ -34,11 +34,6 @@ class Bookshelf extends React.Component {
             <Book
               updateBook={this.updateBook}
               book={book}
-              id={book.id}
-              title={book.title}
-              coverUrl={book.imageLinks.thumbnail}
-              author={book.authors}
-              shelf={book.shelf}
             />
           </li>
         )

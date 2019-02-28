@@ -1,5 +1,5 @@
 import React from 'react';
-import ShelfChanger from './ShelfChanger';
+// import ShelfChanger from './ShelfChanger';
 
 class Book extends React.Component {
   constructor(props) {
@@ -13,14 +13,14 @@ class Book extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ myShelf: this.props.shelf });
+    this.setState({ myShelf: this.props.book.shelf });
   }
 
   render() {
     return (
       <div className='book'>
         <div className="book-top">
-          <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.coverUrl})` }}></div>
+          <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.book.imageLinks.thumbnail})` }}></div>
           {/* <ShelfChanger onChangeShelf={this.handleChange} /> */}
           <div className="book-shelf-changer">
             <select value={this.state.myShelf || "none"} onChange={(e) => { this.props.updateBook(this.props.book, e.target.value) }}>
@@ -32,8 +32,8 @@ class Book extends React.Component {
             </select>
           </div>
         </div>
-        <div className="book-title">{this.props.title}</div>
-        <div className="book-authors">{this.props.author}</div>
+        <div className="book-title">{this.props.book.title}</div>
+        <div className="book-authors">{this.props.book.author}</div>
       </div>
     )
   }

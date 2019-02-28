@@ -2,18 +2,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import * as BooksAPI from '../../BooksAPI';
+import * as APIfunctions from '../../BooksAPI';
 import Book from '../Bookshelf/Book';
 
 
-class Search extends React.Component {
-
-    state = {
+class SearchPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
         query: '',
         results: [],
         isEmpty: false,
         isLoading: false,
     }
+    this.updateBook = this.updateBook.bind(this);
+  }
 
     handleInputChange = (e) => {
         this.setState({query: e.target.value})
@@ -28,7 +31,7 @@ class Search extends React.Component {
         
         this.setState({results: [], isEmpty: false, isLoading: true})
 
-        BooksAPI.search(query)
+        APIfunctions.search(query)
             .then((response) => {
                 // check if the query is the same of the input value 
                 const emptyResponse = !!response.error
@@ -44,56 +47,66 @@ class Search extends React.Component {
             });
     }
 
+    updateBook = (book, shelf) => {
+      console.log(book)
+      APIfunctions.update(book, shelf)
+        .then(resp => {
+          book.shelf = shelf;
+          this.setState({ book });
+          console.log(resp)
+        });
+    }
+
     render () {
         const { isEmpty, isLoading } = this.state
 
         return (
-            <div className="search-container">
-                <div className="search-books-bar">
-                  <Link className="close-search" to="/">Close</Link>
-                  <div className="search-books-input-wrapper">
-                  <input type="text" placeholder="Search by title or author" value={this.state.query}
-                      onChange={(event) => this.handleInputChange(event)} />
-                  </div>
-                </div>
-
-                {isLoading && (
-                    <div className="results-loading">
-                    </div>
-                )}
-
-                {isEmpty && (
-                    <div className="no-results">
-                        Sorry, no results were found.<br/>
-                        Your search '<b>{this.state.query}</b>' did not match any books.
-                        <span className="emotion">¯\_(ツ)_/¯</span>
-                    </div>
-                )}
-
-                {this.state.results.length > 0 && (
-                    <div className="results-details">
-                        <b>{this.state.results.length}</b> results found.
-                    </div>
-                )}
-
-                <ul className="results">
-                    {this.state.results.map((book, index) => (
-                      <Book key={book.id} data={book} onUpdateBook={this.props.onUpdateBook} />
-                    ))}
-                </ul>
+          <div className="search-container">
+            <div className="search-books-bar">
+              <Link className="close-search" to="/">Close</Link>
+              <div className="search-books-input-wrapper">
+              <input type="text" placeholder="Search by Title or Author" value={this.state.query}
+                  onChange={(event) => this.handleInputChange(event)} />
+              </div>
             </div>
+
+            {/* {isLoading && (
+                <div className="results-loading">
+                </div>
+            )} */}
+
+            <div className="message-container">
+              {isEmpty && (
+                'Your search did not return any results.'
+              )}
+              {this.state.results.length > 0 && (
+                `${this.state.results.length} results found...`
+              )}
+            </div>
+
+            <ol className="books-grid results">
+                {this.state.results.map((book) => (
+                  <li key={book.id}>
+                    <Book 
+                      updateBook={this.updateBook}
+                      book={book}
+                      />
+                  </li>
+                ))}
+            </ol>
+          </div>
         )
     }
 }
 
-Search.defaultProps = {
+SearchPage.defaultProps = {
     myBooks: [],
     onUpdateBook: () => {}
 }
 
-Search.propTypes = {
+SearchPage.propTypes = {
     myBooks: PropTypes.array,
     onUpdateBook: PropTypes.func
 }
 
-export default Search;
+export default SearchPage;
