@@ -32,6 +32,7 @@ class Bookshelf extends React.Component {
             <Book
               updateBook={this.updateBook}
               book={book}
+              shelf={book.shelf}
             />
           </li>
         )

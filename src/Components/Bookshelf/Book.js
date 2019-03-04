@@ -5,15 +5,11 @@ class Book extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      myShelf: ''
-    }
-    this.handleChange = (event) => {
-      this.setState({ myShelf: event.target.value });
+      myShelf: props.shelf
     }
   }
-
   componentDidMount() {
-    this.setState({ myShelf: this.props.book.shelf });
+    this.setState({ myShelf: this.props.shelf });
   }
 
   render() {
@@ -28,7 +24,10 @@ class Book extends React.Component {
           </div>
           {/* <ShelfChanger onChangeShelf={this.handleChange} /> */}
           <div className="book-shelf-changer">
-            <select value={this.state.myShelf || "none"} onChange={(e) => { this.props.updateBook(this.props.book, e.target.value) }}>
+            <select 
+              value={this.props.shelf || "none"} 
+              onChange={(e) => { this.props.updateBook(this.props.book, e.target.value) }}
+            >
               <option value="move" disabled>Move to...</option>
               <option value="currentlyReading"  >Currently Reading</option>
               <option value="wantToRead">Want to Read</option>

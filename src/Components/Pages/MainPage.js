@@ -27,8 +27,8 @@ class MainPage extends React.Component {
       this.setState({ books })
       this.sortBooks();
     })
-      .catch(error => {
-      });
+    .catch(error => {
+    });
   }
 
   sortBooks() {
