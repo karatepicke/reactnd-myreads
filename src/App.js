@@ -43,8 +43,11 @@ class BooksApp extends React.Component {
           wtrBooks={this.state.wtrBooks}
           rBooks={this.state.rBooks}
         />
-        <Route path='/search'
-          component={SearchPage}
+        <Route path='/search' render={() => (
+          <SearchPage 
+            books={this.state.books} 
+          />
+        )}
         />
       </div>
     )
