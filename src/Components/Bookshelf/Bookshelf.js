@@ -16,12 +16,10 @@ class Bookshelf extends React.Component {
   }
 
   updateBook = (book, shelf) => {
-    console.log(book)
     APIfunctions.update(book, shelf)
       .then(resp => {
         book.shelf = shelf;
         this.setState({ book });
-        console.log(resp)
       });
     this.props.onBooksChanged();
   }

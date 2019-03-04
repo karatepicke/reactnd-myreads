@@ -23,13 +23,11 @@ class MainPage extends React.Component {
   }
 
   fetchBooks() {
-    console.log('API called')
     APIfunctions.getAll().then((books) => {
       this.setState({ books })
       this.sortBooks();
     })
       .catch(error => {
-        console.log(error)
       });
   }
 
@@ -37,7 +35,6 @@ class MainPage extends React.Component {
     const allBooks = this.state.books
     const crBooks = [], wtrBooks = [], rBooks = []
 
-    console.log('sortBooks function')
     allBooks.forEach(book => {
       if (book.shelf === 'currentlyReading') {
         crBooks.push(book)
