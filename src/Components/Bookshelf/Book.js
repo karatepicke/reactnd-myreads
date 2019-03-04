@@ -20,7 +20,12 @@ class Book extends React.Component {
     return (
       <div className='book'>
         <div className="book-top">
-          <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${this.props.book.imageLinks.thumbnail})` }}></div>
+          <div className="book-cover" style={{ 
+            width: 128, 
+            height: 193, 
+            backgroundImage: `url(${this.props.book.imageLinks === undefined ? '' : this.props.book.imageLinks.thumbnail})` 
+            }}>
+          </div>
           {/* <ShelfChanger onChangeShelf={this.handleChange} /> */}
           <div className="book-shelf-changer">
             <select value={this.state.myShelf || "none"} onChange={(e) => { this.props.updateBook(this.props.book, e.target.value) }}>
