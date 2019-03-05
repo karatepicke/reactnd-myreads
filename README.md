@@ -6,8 +6,9 @@ Part of this project is an REST-API from which books can be fetched via AJAX. Pl
 
 ## Setting up and starting
 
-To get started developing right away:
+To get started working on the project right away:
 
+* clone/pull this repository to your local machine
 * install all project dependencies with `npm install`
 * start the development server with `npm start`
 
