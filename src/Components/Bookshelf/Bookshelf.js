@@ -20,8 +20,8 @@ class Bookshelf extends React.Component {
       .then(resp => {
         book.shelf = shelf;
         this.setState({ book });
+        this.props.onBooksChanged();
       });
-    this.props.onBooksChanged();
   }
 
   filterBooks() {
