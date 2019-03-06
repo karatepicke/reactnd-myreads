@@ -25,32 +25,10 @@ class MainPage extends React.Component {
   fetchBooks() {
     APIfunctions.getAll().then((books) => {
       this.setState({ books })
-      this.sortBooks();
     })
-    .catch(error => {
-    });
+      .catch(error => {
+      });
   }
-
-  sortBooks() {
-    const allBooks = this.state.books
-    const crBooks = [], wtrBooks = [], rBooks = []
-
-    allBooks.forEach(book => {
-      if (book.shelf === 'currentlyReading') {
-        crBooks.push(book)
-      } else if (book.shelf === 'wantToRead') {
-        wtrBooks.push(book)
-      } else {
-        rBooks.push(book)
-      }
-    })
-    this.setState({
-      crBooks: crBooks,
-      wtrBooks: wtrBooks,
-      rBooks: rBooks
-    })
-  }
-
 
   render() {
     return (
