@@ -35,10 +35,9 @@ class SearchPage extends React.Component {
         const emptyResponse = !!response.error
         const results = emptyResponse ? [] : response
 
-        // add the shelf-property t
+        // add the shelf-property
         results.forEach(item => {
           const book = this.props.books.find((elem) => elem.id === item.id)
-          console.log(item)
 
           if (book) {
             item.shelf = book.shelf
