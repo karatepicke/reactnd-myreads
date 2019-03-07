@@ -16,16 +16,16 @@ class Book extends React.Component {
     return (
       <div className='book'>
         <div className="book-top">
-          <div className="book-cover" style={{ 
-            width: 128, 
-            height: 193, 
-            backgroundImage: `url(${this.props.book.imageLinks === undefined ? '' : this.props.book.imageLinks.thumbnail})` 
-            }}>
+          <div className="book-cover" style={{
+            width: 128,
+            height: 193,
+            backgroundImage: `url(${this.props.book.imageLinks === undefined ? '' : this.props.book.imageLinks.thumbnail})`
+          }}>
           </div>
           {/* <ShelfChanger onChangeShelf={this.handleChange} /> */}
           <div className="book-shelf-changer">
-            <select 
-              value={this.props.shelf || "none"} 
+            <select
+              value={this.props.shelf || "none"}
               onChange={(e) => { this.props.updateBook(this.props.book, e.target.value) }}
             >
               <option value="move" disabled>Move to...</option>
@@ -37,7 +37,7 @@ class Book extends React.Component {
           </div>
         </div>
         <div className="book-title">{this.props.book.title}</div>
-        <div className="book-authors">{this.props.book.authors}</div>
+        <div className="book-authors">{this.props.book.authors && this.props.book.authors.join(', ')}</div>
       </div>
     )
   }
