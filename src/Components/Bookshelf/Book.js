@@ -1,5 +1,4 @@
 import React from 'react';
-// import ShelfChanger from './ShelfChanger';
 
 class Book extends React.Component {
   constructor(props) {
@@ -22,7 +21,6 @@ class Book extends React.Component {
             backgroundImage: `url(${this.props.book.imageLinks === undefined ? '' : this.props.book.imageLinks.thumbnail})`
           }}>
           </div>
-          {/* <ShelfChanger onChangeShelf={this.handleChange} /> */}
           <div className="book-shelf-changer">
             <select
               value={this.props.shelf || "none"}
