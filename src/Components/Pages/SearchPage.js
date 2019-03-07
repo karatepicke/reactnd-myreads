@@ -12,7 +12,7 @@ class SearchPage extends React.Component {
     this.state = {
       query: '',
       results: [],
-      isEmpty: false
+      isEmpty: true
     }
     this.updateBook = this.updateBook.bind(this);
   }
@@ -23,29 +23,29 @@ class SearchPage extends React.Component {
   }
 
   findBooks = (query) => {
-    if(query.trim() === '') {
-      this.setState({ results: [], isEmpty: false })
+    if (query.trim() === '') {
+      this.setState({ results: [] })
       return;
     }
     this.setState({ results: [], isEmpty: false })
 
     APIfunctions.search(query)
-    .then((response) => {
-      // check if the query is the same of the input value
-      const emptyResponse = !!response.error
-      const results = emptyResponse ? [] : response
+      .then((response) => {
+        // check if the query is the same of the input value
+        const emptyResponse = !!response.error
+        const results = emptyResponse ? [] : response
 
-      // add the shelf-property t
-      results.forEach(item => {
-        const book = this.props.books.find((elem) => elem.id === item.id)
-        console.log(item)
+        // add the shelf-property t
+        results.forEach(item => {
+          const book = this.props.books.find((elem) => elem.id === item.id)
+          console.log(item)
 
-        if(book) {
-          item.shelf = book.shelf
-        }
-      })
-      this.setState({ results, isEmpty: emptyResponse })
-    });
+          if (book) {
+            item.shelf = book.shelf
+          }
+        })
+        this.setState({ results, isEmpty: emptyResponse })
+      });
   }
 
   updateBook = (book, shelf) => {
@@ -56,7 +56,15 @@ class SearchPage extends React.Component {
       });
   }
 
-  render () {
+  setResultMessage() {
+    if (this.state.isEmpty === true) {
+      return 'Your search did not return any results.'
+    } else {
+      return `${this.state.results.length} results found.`
+    }
+  }
+
+  render() {
     const isEmpty = this.state
 
     return (
@@ -64,28 +72,23 @@ class SearchPage extends React.Component {
         <div className="search-books-bar">
           <Link className="close-search" to="/">Close</Link>
           <div className="search-books-input-wrapper">
-          <input type="text" placeholder="Search by Title or Author" value={this.state.query}
-            onChange={(event) => this.handleInputChange(event)} />
+            <input type="text" placeholder="Search by Title or Author" value={this.state.query}
+              onChange={(event) => this.handleInputChange(event)} />
           </div>
         </div>
 
         <div className="message-container">
-          {isEmpty && (
-            'Your search did not return any results.'
-          )}
-          {this.state.results.length > 0 && (
-            `${this.state.results.length} results found...`
-          )}
+          {this.setResultMessage(isEmpty)}
         </div>
 
         <ol className="books-grid results">
           {this.state.results.map((book) => (
             <li key={book.id}>
-              <Book 
+              <Book
                 updateBook={this.updateBook}
                 shelf={book.shelf}
                 book={book}
-                />
+              />
             </li>
           ))}
         </ol>
